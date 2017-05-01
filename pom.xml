@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>nl.irias</groupId>
-	<artifactId>sherpa-java</artifactId>
+	<artifactId>sherpa-servlet</artifactId>
 	<version>0.1.0</version>
 	<packaging>jar</packaging>
 
-	<name>sherpa-java</name>
+	<name>sherpa-servlet</name>
 	<description>sherpa servlet library</description>
-	<url>https://github.com/irias/sherpa-java</url>
+	<url>https://github.com/irias/sherpa-servlet</url>
 
 	<organization>
 		<name>Irias Informatiemanagement</name>
@@ -24,8 +24,49 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<name>Mechiel Lukkien</name>
+			<email>m.lukkien@irias.nl</email>
+			<organization>Irias Informatiemanagement</organization>
+			<organizationUrl>https://www.irias.nl</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/irias/sherpa-servlet.git</connection>
+		<developerConnection>scm:git:ssh://github.com:irias/sherpa-servlet.git</developerConnection>
+		<url>https://github.com/irias/sherpa-servlet/tree/master</url>
+	</scm>
+
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
