@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>{{.title}}</title>
+		<style>
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height:1.4; font-size:16px; color: #333; }
+a { color: #327CCB; }
+.code { padding: 2px 4px; font-size: 90%; color: #c7254e; background-color: #f9f2f4; border-radius: 4px; }
+		</style>
+	</head>
+	<body>
+		<div style="margin:1em auto 1em; max-width:45em">
+			<h1>{{.title}} <span style="font-weight:normal; font-size:0.7em">- version {{.version}}</span></h1>
+			<p>
+				This is the base URL for {{.title}}. The API has been loaded on this page, under variable <span class="code">{{.id}}</span>. So open your browser's developer console and start calling functions!
+			</p>
+			<p>
+				You can also the <a href="{{.docsURL}}">read documentation</a> for this API.</p>
+			</p>
+			<p style="text-align: center; font-size:smaller; margin-top:8ex;">
+				<a href="https://github.com/irias/sherpa-java/">java sherpa code</a> |
+				<a href="https://www.ueber.net/who/mjl/sherpa/">sherpa api's</a> |
+				<a href="https://bitbucket.org/mjl/sherpaweb/">sherpaweb code</a>
+			</p>
+		</div>
+		<script src="sherpa.js"></script>
+	</body>
+</html>
