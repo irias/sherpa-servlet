@@ -344,7 +344,14 @@ public class SherpaServlet extends HttpServlet {
 				respondErrorOK(response, callback, eee.code, ee.getMessage());
 				return;
 			} else {
-				respondErrorOK(response, callback, SHERPA_SERVER_ERROR, throwableFormatter.format(ee));
+				String msg;
+				try {
+					msg = throwableFormatter.format(ee);
+				} catch (Exception eee) {
+					logger.log(Level.SEVERE, "exception while formatting exception", eee);
+					msg = "error while formatting earlier error";
+				}
+				respondErrorOK(response, callback, SHERPA_SERVER_ERROR, msg);
 				return;
 			}
 		} catch (java.lang.IllegalAccessException e) {
