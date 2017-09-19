@@ -19,7 +19,7 @@ public abstract class SherpaDocHelper {
 
 		for (Class<?> cl : classes) {
 			String name = SherpaDoclet.friendlyName(cl.getName());
-			s += "\n### " + name + "\n\n";
+			s += "\n### Type " + name + "\n\n";
 			for (Field f : cl.getFields()) {
 				s += String.format("- `%s`: %s\n", f.getName(), SherpaDoclet.friendlyName(f.getGenericType().getTypeName()));
 			}
