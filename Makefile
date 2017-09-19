@@ -1,7 +1,5 @@
 jar:
-	mvn install
+	mvn -B install
 
 clean:
-	mvn clean
-
-.PHONY: jar clean
+	mvn -B clean
