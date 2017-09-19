@@ -136,7 +136,11 @@ public class SherpaDoclet {
 					for (Parameter p : md.parameters()) {
 						params.add(p.name() + " " + friendlyName(p.type().toString()));
 					}
-					synopsis = String.format("%s(%s): %s", name, String.join(", ", params), friendlyName(md.returnType().toString()));
+					synopsis = String.format("%s(%s)", name, String.join(", ", params));
+					String returnType = friendlyName(md.returnType().toString());
+					if (!returnType.equals("void")) {
+						synopsis += ": " + returnType;
+					}
 				}
 				return new SherpaFunctionDoc(name, synopsis + "\n" + text);
 			}
