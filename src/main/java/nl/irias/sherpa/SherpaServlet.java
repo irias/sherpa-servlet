@@ -43,6 +43,7 @@ public class SherpaServlet extends HttpServlet {
 	ThrowableFormatter throwableFormatter;
 	SherpaCollector collector;
 	String lastModified;
+	SherpaExceptionTransformer exceptionTransformer;
 
 
 	final String SHERPA_BAD_FUNCTION = "sherpaBadFunction";
@@ -91,7 +92,7 @@ public class SherpaServlet extends HttpServlet {
 		}
 	}
 
-	public SherpaServlet(String path, String id, String title, String version, Class<?>[] sections, SherpaDoc sherpaDoc, ThrowableFormatter throwableFormatter, SherpaCollector collector) throws Exception {
+	public SherpaServlet(String path, String id, String title, String version, Class<?>[] sections, SherpaDoc sherpaDoc, ThrowableFormatter throwableFormatter, SherpaCollector collector, SherpaExceptionTransformer exceptionTransformer) throws Exception {
 		documentation = sherpaDoc;
 
 		lastModified = java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME.format(java.time.ZonedDateTime.now(java.time.ZoneId.of("GMT")));
@@ -159,6 +160,11 @@ public class SherpaServlet extends HttpServlet {
 			collector = new DefaultCollector();
 		}
 		this.collector = collector;
+
+		if (exceptionTransformer == null) {
+			exceptionTransformer = (Exception e) -> e;
+		}
+		this.exceptionTransformer = exceptionTransformer;
 	}
 
 	private String getBaseUrl(HttpServletRequest request, String path) {
@@ -326,12 +332,17 @@ public class SherpaServlet extends HttpServlet {
 		} catch (InvocationTargetException e) {
 			Throwable ee = e.getCause();
 
+			Throwable origException = ee;
+			if (!(ee instanceof SherpaException) && ee instanceof Exception) {
+				ee = this.exceptionTransformer.transform((Exception)ee);
+			}
+
 			if (ee instanceof SherpaUserException) {
 				logger.log(Level.FINE, "user exception from function "+name);
-				logger.log(Level.FINEST, "SherpaUserException from function "+name, ee);
+				logger.log(Level.FINEST, "SherpaUserException from function "+name, origException);
 				collector.sherpaFunctionCalled(name, true, false, now()-t0);
 			} else {
-				logger.log(Level.SEVERE, "exception from function "+name, ee);
+				logger.log(Level.SEVERE, "exception from function "+name, origException);
 				collector.sherpaFunctionCalled(name, true, true, now()-t0);
 			}
 
