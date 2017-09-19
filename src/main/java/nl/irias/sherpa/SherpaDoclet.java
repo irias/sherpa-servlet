@@ -10,9 +10,6 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.io.FileOutputStream;
 
-import nl.irias.sherpa.SherpaDoc;
-import nl.irias.sherpa.SherpaFunctionDoc;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SherpaDoclet {
@@ -100,7 +97,6 @@ public class SherpaDoclet {
 
 	public static SherpaDoc parseSherpaSection(ClassDoc cd) {
 		String title = null;
-		String text = null;
 		boolean isSherpaSection = false;
 
 		for (AnnotationDesc ad : cd.annotations()) {

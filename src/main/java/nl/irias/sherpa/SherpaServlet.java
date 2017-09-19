@@ -8,7 +8,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
@@ -114,7 +113,6 @@ public class SherpaServlet extends HttpServlet {
 			if (_section == null) {
 				throw new Exception("Section does not have SherpaSection annotation. Use @SherpaSection(title=\"...\", docs=\"...\").");
 			}
-			SherpaSection section = (SherpaSection)_section;
 
 			for (Method m : c.getDeclaredMethods()) {
 				SherpaFunction fn = m.getAnnotation(SherpaFunction.class);
@@ -390,8 +388,8 @@ public class SherpaServlet extends HttpServlet {
 	}
 
 	private static String trim(String s, int n) {
-		if (s.length() > 4*1024) {
-			return s.substring(0, 4*1024) + "...";
+		if (s.length() > n) {
+			return s.substring(0, n) + "...";
 		}
 		return s;
 	}
