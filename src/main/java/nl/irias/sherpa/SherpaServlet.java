@@ -245,7 +245,7 @@ public class SherpaServlet extends HttpServlet {
 			call(response, callback, name, new ByteArrayInputStream(body.getBytes("UTF-8")));
 		} catch (Exception e) {
 			collector.sherpaProtocolError();
-			throw new ServletException(e.getMessage());
+			throw new ServletException(String.format("calling function %s: %s", name, e.getMessage()));
 		}
 	}
 
@@ -317,12 +317,13 @@ public class SherpaServlet extends HttpServlet {
 		t0 = now();
 
 		Object result;
+		boolean sensitive = !this.logParameterFunctions.contains(name);
 		try {
 			if (logger.isLoggable(Level.FINER)) {
-				if (this.logParameterFunctions.contains(name)) {
-					logger.log(Level.FINER, "calling function {0} with parameters {1}", new Object[]{name, trim(mapper.writeValueAsString(params), 4*1024)});
-				} else {
+				if (sensitive) {
 					logger.log(Level.FINER, "calling function {0} (parameters hidden due to sensitivity)", new Object[]{name});
+				} else {
+					logger.log(Level.FINER, "calling function {0} with parameters {1}", new Object[]{name, trim(mapper.writeValueAsString(params), 4*1024)});
 				}
 			}
 			result = m.invoke(null, params);
@@ -336,11 +337,15 @@ public class SherpaServlet extends HttpServlet {
 			}
 
 			if (ee instanceof SherpaUserException) {
-				logger.log(Level.FINE, "user exception from function "+name);
-				logger.log(Level.FINEST, "SherpaUserException from function "+name, origException);
+				logger.log(Level.FINE, String.format("user exception from function \"%s\"", name));
+				logger.log(Level.FINEST, String.format("SherpaUserException exception from function \"%s\"", name), origException);
 				collector.sherpaFunctionCalled(name, true, false, now()-t0);
 			} else {
-				logger.log(Level.SEVERE, "exception from function "+name, origException);
+				if (sensitive) {
+					logger.log(Level.SEVERE, String.format("exception from function \"%s\" (parameters hidden due to sensitivity)", name), origException);
+				} else {
+					logger.log(Level.SEVERE, String.format("exception from function \"%s\" with parameters %s", name, trim(mapper.writeValueAsString(params), 4*1024)), origException);
+				}
 				collector.sherpaFunctionCalled(name, true, true, now()-t0);
 			}
 
