@@ -413,7 +413,7 @@ public class SherpaServlet extends HttpServlet {
 		try {
 			call(response, callback, name, request.getInputStream());
 		} catch (Exception e) {
-			throw new ServletException(e.getMessage());
+			throw new ServletException(String.format("calling function %s: %s", name, e.getMessage()));
 		}
 	}
 
