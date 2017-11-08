@@ -12,6 +12,14 @@ To see how you could use this library, we've created created an example [3].
 - [2] https://google.com/search?q=nl.irias/sherpa-servlet%20maven
 - [3] https://github.com/irias/sherpa-servlet-example
 
+# Logging
+
+Sherpa-servlet logs under name "nl.irias.sherpa", with the following messages logged at each log level:
+
+- SEVERE: of sherpa functions that raise an exception other than SherpaUserException. or when your exception formatter throws an error.
+- FINE: the raising of SherpaUserException by handlers.
+- FINER: all sherpa calls with their parameters (except when they were annotated to have sensitive parameters).
+- FINEST: full SherpaUserException raised by handlers.
 
 # License
 
